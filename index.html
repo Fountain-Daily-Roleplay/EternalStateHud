@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GTA SA-MP Obsidian Carbon HUD</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome untuk Ikon Faction -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        sampBlack: '#09090B',
+                        sampRed: '#E11D48',
+                        sampWhite: '#FFFFFF',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Reset & Fallback CSS agar tetap rapi di CEF SA:MP Mobile/PC */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: transparent !important;
+            overflow: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* Background Hitam Obsidian Mewah dengan Tekstur Karbon Mikro */
+        .obsidian-card {
+            background-color: #050506;
+            background-image: 
+                linear-gradient(145deg, #0D0D10 0%, #050506 55%, #000000 100%),
+                repeating-linear-gradient(
+                    45deg,
+                    rgba(255, 255, 255, 0.025) 0px,
+                    rgba(255, 255, 255, 0.025) 1px,
+                    transparent 1px,
+                    transparent 5px
+                );
+        }
+
+        /* Background Kapsul Hitam Pekat Mengilap */
+        .obsidian-pill {
+            background: linear-gradient(180deg, #111114 0%, #050506 100%);
+        }
+
+        /* Efek kilau bingkai tipis atas-bawah */
+        .card-rim {
+            box-shadow: 
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
+                inset 0 -1px 0 0 rgba(225, 29, 72, 0.25),
+                0 12px 28px -6px rgba(0, 0, 0, 0.92);
+        }
+
+        /* Angka stabil tidak bergeser */
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Animasi halus saat nominal uang berubah */
+        @keyframes valuePop {
+            0% { transform: scale(1); }
+            45% { transform: scale(1.04); color: #E11D48; }
+            100% { transform: scale(1); }
+        }
+        .animate-update {
+            animation: valuePop 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+    </style>
+</head>
+<body class="p-2.5 sm:p-4">
+
+    <!-- ===================================================================== -->
+    <!-- KONTENER UTAMA HUD (OBSIDIAN HITAM - MERAH - PUTIH)                   -->
+    <!-- ===================================================================== -->
+    <div class="w-full flex justify-end items-start">
+        <div id="samp-hud" class="flex flex-col items-end gap-1.5 max-w-[235px] sm:max-w-[275px] w-auto transition-opacity duration-200">
+            
+            <!-- BAGIAN 0: LOGO SERVER (MELAYANG TANPA CARD DARI FOLDER ASSETS) -->
+            <div class="flex items-center justify-end pr-0.5 pb-1 select-none">
+                <img 
+                    id="hud-server-logo" 
+                    src="assets/logo.png" 
+                    alt="Server Logo" 
+                    onerror="this.onerror=null; this.src='https://placehold.co/200x60/09090B/FFFFFF?text=LOGO+SERVER';"
+                    class="h-14 sm:h-16 w-auto max-w-[230px] object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.95)]"
+                >
+            </div>
+
+            <!-- BAGIAN 1: KAPSUL PLAYER ID & FACTION -->
+            <div class="obsidian-pill border border-white/25 rounded-full px-3 py-1 card-rim flex items-center gap-2 relative overflow-hidden">
+                <!-- Aksen Garis Atas Merah Tipis -->
+                <div class="absolute top-0 left-4 right-4 h-[1.5px] bg-gradient-to-r from-transparent via-[#E11D48] to-transparent"></div>
+
+                <!-- Indikator Titik Merah -->
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E11D48] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#E11D48]"></span>
+                    </span>
+                    <span class="font-display font-extrabold text-[11px] sm:text-xs tracking-wider text-white tabular-nums">
+                        ID <span id="hud-playerid">142</span>
+                    </span>
+                </div>
+
+                <!-- Garis Pemisah Putih -->
+                <div class="h-3 w-[1px] bg-white/30 shrink-0"></div>
+
+                <!-- Faction -->
+                <div class="flex items-center gap-1 min-w-0">
+                    <i id="faction-icon" class="fa-solid fa-shield-halved text-[#E11D48] text-[9px] shrink-0"></i>
+                    <span id="hud-faction" class="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-widest truncate">
+                        LSPD • OFFICER
+                    </span>
+                </div>
+            </div>
+
+            <!-- BAGIAN 2: KARTU KEUANGAN UTAMA (CASH & BANK) -->
+            <div class="w-full obsidian-card border border-white/25 rounded-2xl p-2 sm:p-2.5 card-rim relative overflow-hidden flex items-center gap-2.5">
+                
+                <!-- Aksen Garis Atas Putih Tipis -->
+                <div class="absolute top-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-white/45 to-transparent"></div>
+
+                <!-- Ikon Dompet/Uang SVG Inline dengan Bingkai Putih Halus -->
+                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-[#E11D48] to-[#9F1239] border border-white/30 flex items-center justify-center shrink-0 shadow-md text-white relative">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                        <circle cx="12" cy="12" r="2.5"></circle>
+                        <path d="M6 12h.01M18 12h.01"></path>
+                    </svg>
+                </div>
+
+                <!-- Info Cash & Bank (Gaya & Ukuran Identik) -->
+                <div class="flex flex-col min-w-0 pr-1 flex-1 gap-1.5">
+                    <!-- Baris Atas: Badge CASH + Nominal Cash -->
+                    <div class="flex items-center gap-1.5">
+                        <span class="px-1.5 py-0.5 bg-white text-[#09090B] font-display font-extrabold text-[8px] sm:text-[9px] rounded shadow-sm uppercase tracking-wider shrink-0 leading-none border-b-2 border-[#E11D48] w-[38px] text-center">
+                            CASH
+                        </span>
+                        <span id="hud-cash" class="font-display font-bold text-xs sm:text-[13px] text-white truncate leading-tight tabular-nums">
+                            $24,500
+                        </span>
+                    </div>
+
+                    <!-- Baris Bawah: Badge BANK + Nominal Bank (Sama Persis dengan Cash) -->
+                    <div class="flex items-center gap-1.5">
+                        <span class="px-1.5 py-0.5 bg-white text-[#09090B] font-display font-extrabold text-[8px] sm:text-[9px] rounded shadow-sm uppercase tracking-wider shrink-0 leading-none border-b-2 border-[#E11D48] w-[38px] text-center">
+                            BANK
+                        </span>
+                        <span id="hud-bank" class="font-display font-bold text-xs sm:text-[13px] text-white truncate leading-tight tabular-nums">
+                            $1,850,000
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- SCRIPT LOGIKA & INTEGRASI CEF SA:MP (MOBILE & PC)                     -->
+    <!-- ===================================================================== -->
+    <script>
+        const hudState = {
+            id: 142,
+            faction: "LSPD • OFFICER",
+            cash: 24500,
+            bank: 1850000
+        };
+
+        const dom = {
+            container: document.getElementById('samp-hud'),
+            id: document.getElementById('hud-playerid'),
+            faction: document.getElementById('hud-faction'),
+            icon: document.getElementById('faction-icon'),
+            cash: document.getElementById('hud-cash'),
+            bank: document.getElementById('hud-bank')
+        };
+
+        function formatCurrency(num) {
+            return Number(num).toLocaleString('en-US');
+        }
+
+        function triggerPop(el) {
+            if (!el) return;
+            el.classList.remove('animate-update');
+            void el.offsetWidth;
+            el.classList.add('animate-update');
+        }
+
+        function setFactionIcon(factionName) {
+            if (!dom.icon) return;
+            const name = factionName.toUpperCase();
+            dom.icon.className = 'fa-solid text-[#E11D48] text-[10px] shrink-0 ';
+
+            if (name.includes('LSPD') || name.includes('POLICE') || name.includes('SAPD') || name.includes('SHERIFF')) {
+                dom.icon.classList.add('fa-shield-halved');
+            } else if (name.includes('SAFD') || name.includes('MEDIC') || name.includes('EMS') || name.includes('SAMD')) {
+                dom.icon.classList.add('fa-truck-medical');
+            } else if (name.includes('NEWS') || name.includes('SAN')) {
+                dom.icon.classList.add('fa-tower-broadcast');
+            } else if (name.includes('GOV')) {
+                dom.icon.classList.add('fa-landmark');
+            } else if (name === 'CIVILIAN' || name === 'NONE' || name === '-') {
+                dom.icon.classList.add('fa-user');
+            } else {
+                dom.icon.classList.add('fa-users');
+            }
+        }
+
+        /**
+         * Fungsi Global untuk memperbarui HUD dari Pawn / CEF
+         * Contoh: updateSAMP_HUD(15, "LSPD • CHIEF", 50000, 1200000);
+         */
+        function updateSAMP_HUD(id, faction, cash, bank) {
+            try {
+                if (id !== undefined && id !== null && dom.id) {
+                    hudState.id = parseInt(id);
+                    dom.id.textContent = hudState.id;
+                }
+
+                if (faction !== undefined && faction !== null && dom.faction) {
+                    hudState.faction = String(faction).toUpperCase();
+                    dom.faction.textContent = hudState.faction;
+                    setFactionIcon(hudState.faction);
+                }
+
+                if (cash !== undefined && cash !== null && dom.cash) {
+                    const parsedCash = parseInt(cash);
+                    if (parsedCash !== hudState.cash) {
+                        hudState.cash = parsedCash;
+                        dom.cash.textContent = '$' + formatCurrency(hudState.cash);
+                        triggerPop(dom.cash);
+                    }
+                }
+
+                if (bank !== undefined && bank !== null && dom.bank) {
+                    const parsedBank = parseInt(bank);
+                    if (parsedBank !== hudState.bank) {
+                        hudState.bank = parsedBank;
+                        dom.bank.textContent = '$' + formatCurrency(hudState.bank);
+                        triggerPop(dom.bank);
+                    }
+                }
+            } catch (e) {
+                console.error("HUD Update Error:", e);
+            }
+        }
+
+        function toggleHUD(visible) {
+            if (!dom.container) return;
+            if (visible) {
+                dom.container.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                dom.container.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        // Listener Event CEF SA:MP (Support Android & PC)
+        if (typeof cef !== 'undefined') {
+            cef.on("updateSAMP_HUD", function(id, faction, cash, bank) {
+                updateSAMP_HUD(id, faction, cash, bank);
+            });
+
+            cef.on("toggleHUD", function(visible) {
+                toggleHUD(Boolean(visible));
+            });
+        }
+
+        // Shortcut F7 untuk sembunyikan/tampilkan HUD
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'F7') {
+                e.preventDefault();
+                const isHidden = dom.container.classList.contains('opacity-0');
+                toggleHUD(isHidden);
+            }
+        });
+    </script>
+</body>
+</html>
