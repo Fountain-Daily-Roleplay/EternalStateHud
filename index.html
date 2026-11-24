@@ -92,6 +92,437 @@
         .animate-update {
             animation: valuePop 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
+    
+
+        /* macOS-style title bars for every HUD card: black, red and white */
+        .obsidian-card,
+        .obsidian-pill {
+            position: relative;
+            isolation: isolate;
+            border-color: rgba(255,255,255,.30) !important;
+            background-color: #050506;
+        }
+
+        /* Main financial card gets a compact macOS title bar */
+        .obsidian-card {
+            padding-top: 25px !important;
+            background-image:
+                linear-gradient(145deg, #151519 0%, #070709 58%, #000 100%),
+                repeating-linear-gradient(45deg, rgba(255,255,255,.018) 0px, rgba(255,255,255,.018) 1px, transparent 1px, transparent 5px) !important;
+        }
+        .obsidian-card::before {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            top: 8px;
+            left: 10px;
+            width: 30px;
+            height: 9px;
+            border-radius: 99px;
+            background:
+                radial-gradient(circle at 4.5px 4.5px, #ff5f57 0 3.5px, transparent 3.8px),
+                radial-gradient(circle at 15px 4.5px, #febc2e 0 3.5px, transparent 3.8px),
+                radial-gradient(circle at 25.5px 4.5px, #28c840 0 3.5px, transparent 3.8px);
+            pointer-events: none;
+        }
+        .obsidian-card::after {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            top: 21px;
+            left: 9px;
+            right: 9px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(225,29,72,.8), rgba(255,255,255,.22), transparent);
+            pointer-events: none;
+        }
+        /* Player ID / faction capsule also receives macOS traffic-light header detail */
+        .obsidian-pill {
+            padding-top: 8px !important;
+            border-radius: 14px !important;
+            background: linear-gradient(180deg, #17171b 0%, #050506 100%) !important;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(225,29,72,.35), 0 8px 20px rgba(0,0,0,.7) !important;
+        }
+        .obsidian-pill::before {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            top: 5px;
+            left: 11px;
+            width: 24px;
+            height: 7px;
+            background:
+                radial-gradient(circle at 3.5px 3.5px, #ff5f57 0 2.8px, transparent 3px),
+                radial-gradient(circle at 12px 3.5px, #febc2e 0 2.8px, transparent 3px),
+                radial-gradient(circle at 20.5px 3.5px, #28c840 0 2.8px, transparent 3px);
+            pointer-events: none;
+        }
+        .obsidian-pill::after {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            top: 16px;
+            left: 9px;
+            right: 9px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(225,29,72,.8), rgba(255,255,255,.18), transparent);
+            pointer-events: none;
+        }
+        .obsidian-pill > *, .obsidian-card > * { position: relative; }
+        .obsidian-pill > .absolute, .obsidian-card > .absolute { position: absolute; }
+        .obsidian-card .text-white, .obsidian-pill .text-white { color: #fff !important; }
+        @media (max-width: 420px) {
+            #samp-hud { max-width: min(235px, 72vw) !important; }
+            .obsidian-card { padding: 24px 8px 8px !important; }
+            .obsidian-pill { gap: 6px !important; }
+        }
+
+    
+        /* ===== Layout polish: cleaner spacing, alignment and hierarchy ===== */
+        body {
+            padding: 12px !important;
+        }
+        #samp-hud {
+            width: min(268px, 78vw) !important;
+            max-width: 268px !important;
+            gap: 9px !important;
+        }
+        #hud-server-logo {
+            display: block;
+            width: auto !important;
+            height: 78px !important;
+            max-height: 78px !important;
+            max-width: min(100%, 260px) !important;
+            object-fit: contain;
+            object-position: right center;
+            transform: scale(1.08);
+            transform-origin: right center;
+        }
+        #samp-hud > div:first-child {
+            min-height: 86px !important;
+            padding-top: 4px;
+            padding-bottom: 5px;
+        }
+        @media (max-width: 420px) {
+            #hud-server-logo {
+                height: 68px !important;
+                max-height: 68px !important;
+                max-width: min(100%, 230px) !important;
+            }
+            #samp-hud > div:first-child {
+                min-height: 76px !important;
+            }
+        }
+        #samp-hud > div:first-child {
+            width: 100%;
+            min-height: 48px;
+            padding: 0 5px 2px 0;
+        }
+
+        .obsidian-pill {
+            width: 100%;
+            min-height: 42px;
+            justify-content: flex-start;
+            padding: 23px 12px 9px !important;
+            border-radius: 13px !important;
+            gap: 9px !important;
+        }
+        .obsidian-pill::before {
+            top: 8px;
+            left: 12px;
+            width: 27px;
+            height: 8px;
+            background:
+                radial-gradient(circle at 4px 4px, #ff5f57 0 3px, transparent 3.3px),
+                radial-gradient(circle at 13.5px 4px, #febc2e 0 3px, transparent 3.3px),
+                radial-gradient(circle at 23px 4px, #28c840 0 3px, transparent 3.3px);
+        }
+        .obsidian-pill::after {
+            top: 20px;
+            left: 10px;
+            right: 10px;
+            opacity: .85;
+        }
+        .obsidian-pill > .absolute {
+            display: none;
+        }
+        .obsidian-pill #hud-faction {
+            font-size: 9px !important;
+            letter-spacing: .07em !important;
+            line-height: 1.2;
+        }
+        .obsidian-pill > div:nth-of-type(2) {
+            height: 18px;
+            opacity: .65;
+        }
+
+        .obsidian-card {
+            width: 100%;
+            min-height: 104px;
+            padding: 29px 12px 12px !important;
+            border-radius: 15px !important;
+            display: flex;
+            align-items: center;
+            gap: 11px !important;
+        }
+        .obsidian-card::before {
+            top: 9px;
+            left: 12px;
+            width: 29px;
+            height: 9px;
+            background:
+                radial-gradient(circle at 4.5px 4.5px, #ff5f57 0 3.2px, transparent 3.5px),
+                radial-gradient(circle at 14.5px 4.5px, #febc2e 0 3.2px, transparent 3.5px),
+                radial-gradient(circle at 24.5px 4.5px, #28c840 0 3.2px, transparent 3.5px);
+        }
+        .obsidian-card::after {
+            top: 24px;
+            left: 10px;
+            right: 10px;
+        }
+        .obsidian-card > .absolute {
+            display: none;
+        }
+        .obsidian-card > div:nth-child(2) {
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 11px !important;
+            flex: 0 0 36px;
+        }
+        .obsidian-card > div:nth-child(2) svg {
+            width: 18px;
+            height: 18px;
+        }
+        .obsidian-card > div:nth-child(3) {
+            width: 100%;
+            gap: 8px !important;
+            padding-right: 0 !important;
+        }
+        .obsidian-card > div:nth-child(3) > div {
+            min-height: 24px;
+            gap: 8px !important;
+        }
+        .obsidian-card > div:nth-child(3) > div + div {
+            padding-top: 7px;
+            border-top: 1px solid rgba(255,255,255,.10);
+        }
+        .obsidian-card > div:nth-child(3) span:first-child {
+            width: 42px !important;
+            min-width: 42px;
+            padding: 4px 5px !important;
+            font-size: 8px !important;
+            letter-spacing: .08em !important;
+            border-radius: 5px !important;
+        }
+        .obsidian-card > div:nth-child(3) span:last-child {
+            font-size: 12px !important;
+            line-height: 1.25 !important;
+            letter-spacing: .01em;
+        }
+
+        @media (max-width: 420px) {
+            body { padding: 8px !important; }
+            #samp-hud { width: min(250px, 82vw) !important; }
+            .obsidian-pill { padding-left: 10px !important; padding-right: 9px !important; }
+            .obsidian-card { padding-left: 10px !important; padding-right: 10px !important; }
+        }
+        @media (max-width: 340px) {
+            #samp-hud { width: 88vw !important; }
+            .obsidian-pill #hud-faction { font-size: 8px !important; }
+            .obsidian-card > div:nth-child(3) span:last-child { font-size: 11px !important; }
+        }
+
+
+        /* HUD modules: setiap informasi berdiri sendiri dan tersusun rapi */
+        .hud-status-grid {
+            width: 100%; display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;
+        }
+        .hud-status-card {
+            min-width: 0; min-height: 58px; position: relative;
+            display: flex; align-items: center; gap: 8px;
+            padding: 12px 9px 8px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,.24); border-radius: 12px;
+            background: linear-gradient(145deg,#17171b 0%,#08080a 65%,#030304 100%);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.13), inset 0 -1px 0 rgba(225,29,72,.25), 0 7px 16px rgba(0,0,0,.65);
+        }
+        .hud-status-card::before {
+            content: ""; position: absolute; top: 0; left: 10px; right: 10px; height: 1px;
+            background: linear-gradient(90deg,transparent,rgba(225,29,72,.8),transparent);
+        }
+        .hud-status-icon {
+            width: 28px; height: 28px; flex: 0 0 28px; display: grid; place-items: center;
+            border-radius: 8px; color: #fff; background: linear-gradient(145deg,#e11d48,#881337); font-size: 12px;
+        }
+        .hud-status-copy { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+        .hud-status-label { color: rgba(255,255,255,.55); font-size: 8px; font-weight: 800; letter-spacing: .13em; }
+        .hud-status-copy strong { color: #fff; font-size: 13px; line-height: 1.1; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .hud-status-copy strong small { color: #e11d48; font-size: 9px; }
+        .hud-status-dot { width: 6px; height: 6px; margin-left: auto; flex: 0 0 6px; border-radius: 50%; background: #28c840; box-shadow: 0 0 8px rgba(40,200,64,.8); }
+        .hud-status-dot.medium { background:#febc2e; box-shadow:0 0 8px rgba(254,188,46,.7); }
+        .hud-status-dot.high { background:#ff5f57; box-shadow:0 0 8px rgba(255,95,87,.7); }
+        .hud-clock-zone { margin-left:auto; color:#e11d48; font-size:8px; font-weight:900; letter-spacing:.08em; }
+        @media (max-width: 340px) {
+            .hud-status-grid { gap: 6px; }
+            .hud-status-card { padding-left: 7px; padding-right: 6px; gap: 6px; }
+            .hud-status-copy strong { font-size: 12px; }
+        }
+
+    
+
+        /* ===== FINAL REFINEMENT: CONSISTENT macOS WINDOWS ===== */
+        body { padding: 10px !important; }
+        #samp-hud {
+            width: min(276px, calc(100vw - 20px)) !important;
+            max-width: 276px !important;
+            gap: 9px !important;
+        }
+        .mac-window {
+            position: relative !important;
+            isolation: isolate;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.22) !important;
+            background: linear-gradient(145deg, rgba(29,29,34,.98), rgba(7,7,10,.99) 72%) !important;
+            box-shadow: 0 9px 22px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(225,29,72,.18) !important;
+            border-radius: 13px !important;
+        }
+        .mac-window::before {
+            content: "" !important;
+            position: absolute !important;
+            z-index: 5 !important;
+            top: 8px !important;
+            left: 11px !important;
+            width: 8px !important;
+            height: 8px !important;
+            border-radius: 50% !important;
+            background: #ff5f57 !important;
+            box-shadow: 13px 0 0 #febc2e, 26px 0 0 #28c840 !important;
+            pointer-events: none;
+        }
+        .mac-window::after {
+            content: "" !important;
+            position: absolute !important;
+            z-index: 4 !important;
+            top: 24px !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 1px !important;
+            background: linear-gradient(90deg, transparent, rgba(225,29,72,.72) 28%, rgba(255,255,255,.16) 72%, transparent) !important;
+            pointer-events: none;
+        }
+        .mac-window-title {
+            position: absolute !important;
+            z-index: 3 !important;
+            top: 6px !important;
+            left: 53px !important;
+            right: 10px !important;
+            height: 13px !important;
+            display: block !important;
+            overflow: hidden !important;
+            color: rgba(255,255,255,.58) !important;
+            font: 800 7px/13px Inter, sans-serif !important;
+            letter-spacing: .16em !important;
+            text-align: right !important;
+            white-space: nowrap !important;
+            pointer-events: none;
+        }
+        .player-window {
+            min-height: 61px !important;
+            padding: 29px 11px 8px !important;
+            gap: 8px !important;
+            border-radius: 13px !important;
+        }
+        .player-window > *:not(.mac-window-title) { position: relative; z-index: 2; }
+        .player-window > .absolute { display: none !important; }
+        .hud-status-grid { gap: 8px !important; }
+        .hud-status-card {
+            min-height: 78px !important;
+            padding: 31px 9px 9px !important;
+            border-radius: 13px !important;
+            align-items: center !important;
+        }
+        .hud-status-card .mac-window-title { top: 6px !important; }
+        /* Tiga tombol traffic-light macOS juga tampil pada card Ping dan Jam */
+        .hud-status-card::before {
+            display: block !important;
+            content: "" !important;
+            position: absolute !important;
+            z-index: 5 !important;
+            top: 8px !important;
+            left: 11px !important;
+            right: auto !important;
+            width: 8px !important;
+            height: 8px !important;
+            border-radius: 50% !important;
+            background: #ff5f57 !important;
+            box-shadow: 13px 0 0 #febc2e, 26px 0 0 #28c840 !important;
+            pointer-events: none !important;
+        }
+        .hud-status-card::after { top: 24px !important; }
+        .hud-status-icon {
+            width: 29px !important;
+            height: 29px !important;
+            flex-basis: 29px !important;
+            border: 1px solid rgba(255,255,255,.18);
+            box-shadow: 0 3px 9px rgba(225,29,72,.2);
+        }
+        .hud-status-copy { gap: 3px !important; }
+        .hud-status-label { font-size: 7px !important; letter-spacing: .14em !important; }
+        .hud-status-copy strong { font-size: 13px !important; letter-spacing: .01em; }
+        .hud-clock-zone { font-size: 7px !important; }
+        .wallet-window {
+            min-height: 112px !important;
+            padding: 34px 12px 11px !important;
+            border-radius: 14px !important;
+            gap: 10px !important;
+        }
+        .wallet-window::before { top: 8px !important; }
+        .wallet-window::after { top: 24px !important; }
+        .wallet-window > .absolute { display: none !important; }
+        .wallet-window .wallet-icon {
+            width: 36px !important;
+            height: 36px !important;
+            flex: 0 0 36px !important;
+            border-radius: 10px !important;
+        }
+        .wallet-window .wallet-values { min-width: 0; flex: 1; gap: 8px !important; }
+        .wallet-window .wallet-values > div { min-height: 25px; }
+        .wallet-window .wallet-values span:last-child {
+            font-size: 12px !important;
+            font-variant-numeric: tabular-nums;
+        }
+        #hud-server-logo {
+            max-width: 100% !important;
+            height: 66px !important;
+            max-height: 66px !important;
+            transform: none !important;
+            object-position: right center !important;
+        }
+        #samp-hud > div:first-child {
+            min-height: 69px !important;
+            padding: 0 2px 2px 0 !important;
+        }
+        @media (max-width: 420px) {
+            body { padding: 7px !important; }
+            #samp-hud { width: min(258px, calc(100vw - 14px)) !important; }
+            #hud-server-logo { height: 58px !important; max-height: 58px !important; }
+            #samp-hud > div:first-child { min-height: 61px !important; }
+            .player-window { padding-left: 9px !important; padding-right: 8px !important; }
+            .player-window #hud-faction { font-size: 8px !important; letter-spacing: .045em !important; }
+            .hud-status-card { gap: 6px !important; padding-left: 7px !important; padding-right: 6px !important; }
+            .hud-status-copy strong { font-size: 12px !important; }
+            .wallet-window { padding-left: 9px !important; padding-right: 9px !important; }
+        }
+        @media (max-width: 340px) {
+            #samp-hud { width: calc(100vw - 14px) !important; }
+            .hud-status-grid { gap: 6px !important; }
+            .hud-status-card { min-height: 74px !important; }
+            .wallet-window .wallet-values span:last-child { font-size: 11px !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        }
+
     </style>
 </head>
 <body class="p-2.5 sm:p-4">
@@ -114,7 +545,7 @@
             </div>
 
             <!-- BAGIAN 1: KAPSUL PLAYER ID & FACTION -->
-            <div class="obsidian-pill border border-white/25 rounded-full px-3 py-1 card-rim flex items-center gap-2 relative overflow-hidden">
+            <div class="obsidian-pill mac-window player-window border border-white/25 rounded-full px-3 py-1 card-rim flex items-center gap-2 relative overflow-hidden"><span class="mac-window-title">PLAYER PROFILE</span>
                 <!-- Aksen Garis Atas Merah Tipis -->
                 <div class="absolute top-0 left-4 right-4 h-[1.5px] bg-gradient-to-r from-transparent via-[#E11D48] to-transparent"></div>
 
@@ -141,14 +572,34 @@
                 </div>
             </div>
 
-            <!-- BAGIAN 2: KARTU KEUANGAN UTAMA (CASH & BANK) -->
-            <div class="w-full obsidian-card border border-white/25 rounded-2xl p-2 sm:p-2.5 card-rim relative overflow-hidden flex items-center gap-2.5">
+            <!-- BAGIAN 2: PING DAN JAM (KARTU TERPISAH) -->
+            <div class="hud-status-grid">
+                <div class="hud-status-card mac-window" aria-label="Koneksi ping"><span class="mac-window-title">NETWORK</span>
+                    <div class="hud-status-icon"><i class="fa-solid fa-signal"></i></div>
+                    <div class="hud-status-copy">
+                        <span class="hud-status-label">PING</span>
+                        <strong><span id="hud-ping">42</span><small> ms</small></strong>
+                    </div>
+                    <span id="hud-ping-dot" class="hud-status-dot"></span>
+                </div>
+                <div class="hud-status-card mac-window" aria-label="Waktu Indonesia Barat"><span class="mac-window-title">LOCAL TIME</span>
+                    <div class="hud-status-icon"><i class="fa-regular fa-clock"></i></div>
+                    <div class="hud-status-copy">
+                        <span class="hud-status-label">JAM</span>
+                        <strong id="hud-clock">00:00:00</strong>
+                    </div>
+                    <span class="hud-clock-zone">WIB</span>
+                </div>
+            </div>
+
+            <!-- BAGIAN 3: KARTU KEUANGAN UTAMA (CASH & BANK) -->
+            <div class="w-full obsidian-card mac-window wallet-window border border-white/25 rounded-2xl p-2 sm:p-2.5 card-rim relative overflow-hidden flex items-center gap-2.5"><span class="mac-window-title">WALLET</span>
                 
                 <!-- Aksen Garis Atas Putih Tipis -->
                 <div class="absolute top-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-white/45 to-transparent"></div>
 
                 <!-- Ikon Dompet/Uang SVG Inline dengan Bingkai Putih Halus -->
-                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-[#E11D48] to-[#9F1239] border border-white/30 flex items-center justify-center shrink-0 shadow-md text-white relative">
+                <div class="wallet-icon w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-[#E11D48] to-[#9F1239] border border-white/30 flex items-center justify-center shrink-0 shadow-md text-white relative">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="6" width="20" height="12" rx="2"></rect>
                         <circle cx="12" cy="12" r="2.5"></circle>
@@ -157,7 +608,7 @@
                 </div>
 
                 <!-- Info Cash & Bank (Gaya & Ukuran Identik) -->
-                <div class="flex flex-col min-w-0 pr-1 flex-1 gap-1.5">
+                <div class="wallet-values flex flex-col min-w-0 pr-1 flex-1 gap-1.5">
                     <!-- Baris Atas: Badge CASH + Nominal Cash -->
                     <div class="flex items-center gap-1.5">
                         <span class="px-1.5 py-0.5 bg-white text-[#09090B] font-display font-extrabold text-[8px] sm:text-[9px] rounded shadow-sm uppercase tracking-wider shrink-0 leading-none border-b-2 border-[#E11D48] w-[38px] text-center">
@@ -201,7 +652,10 @@
             faction: document.getElementById('hud-faction'),
             icon: document.getElementById('faction-icon'),
             cash: document.getElementById('hud-cash'),
-            bank: document.getElementById('hud-bank')
+            bank: document.getElementById('hud-bank'),
+            ping: document.getElementById('hud-ping'),
+            pingDot: document.getElementById('hud-ping-dot'),
+            clock: document.getElementById('hud-clock')
         };
 
         function formatCurrency(num) {
@@ -242,8 +696,8 @@
         function updateSAMP_HUD(id, faction, cash, bank) {
             try {
                 if (id !== undefined && id !== null && dom.id) {
-                    hudState.id = parseInt(id);
-                    dom.id.textContent = hudState.id;
+                    const parsedId = Number.parseInt(id, 10);
+                    if (Number.isFinite(parsedId)) { hudState.id = parsedId; dom.id.textContent = parsedId; }
                 }
 
                 if (faction !== undefined && faction !== null && dom.faction) {
@@ -253,8 +707,8 @@
                 }
 
                 if (cash !== undefined && cash !== null && dom.cash) {
-                    const parsedCash = parseInt(cash);
-                    if (parsedCash !== hudState.cash) {
+                    const parsedCash = Number.parseInt(cash, 10);
+                    if (Number.isFinite(parsedCash) && parsedCash !== hudState.cash) {
                         hudState.cash = parsedCash;
                         dom.cash.textContent = '$' + formatCurrency(hudState.cash);
                         triggerPop(dom.cash);
@@ -262,8 +716,8 @@
                 }
 
                 if (bank !== undefined && bank !== null && dom.bank) {
-                    const parsedBank = parseInt(bank);
-                    if (parsedBank !== hudState.bank) {
+                    const parsedBank = Number.parseInt(bank, 10);
+                    if (Number.isFinite(parsedBank) && parsedBank !== hudState.bank) {
                         hudState.bank = parsedBank;
                         dom.bank.textContent = '$' + formatCurrency(hudState.bank);
                         triggerPop(dom.bank);
@@ -283,6 +737,30 @@
             }
         }
 
+        // Update ping dari server/CEF: updateSAMP_Ping(35)
+        function updateSAMP_Ping(value) {
+            const parsedPing = Number.parseInt(value, 10);
+            if (!Number.isFinite(parsedPing)) return;
+            const ping = Math.max(0, parsedPing);
+            if (dom.ping) dom.ping.textContent = ping;
+            if (dom.pingDot) {
+                dom.pingDot.classList.remove('medium', 'high');
+                if (ping >= 180) dom.pingDot.classList.add('high');
+                else if (ping >= 90) dom.pingDot.classList.add('medium');
+            }
+        }
+
+        // Jam WIB otomatis
+        function updateHUDClock() {
+            if (!dom.clock) return;
+            dom.clock.textContent = new Intl.DateTimeFormat('id-ID', {
+                timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit',
+                second: '2-digit', hourCycle: 'h23'
+            }).format(new Date());
+        }
+        updateHUDClock();
+        setInterval(updateHUDClock, 1000);
+
         // Listener Event CEF SA:MP (Support Android & PC)
         if (typeof cef !== 'undefined') {
             cef.on("updateSAMP_HUD", function(id, faction, cash, bank) {
@@ -291,6 +769,9 @@
 
             cef.on("toggleHUD", function(visible) {
                 toggleHUD(Boolean(visible));
+            });
+            cef.on("updateSAMP_Ping", function(ping) {
+                updateSAMP_Ping(ping);
             });
         }
 
